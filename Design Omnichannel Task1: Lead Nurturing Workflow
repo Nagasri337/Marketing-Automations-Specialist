@@ -1,10 +1,4 @@
-import { useState, useEffect } from "react";
 
-export default function LeadNurturingWorkflow() {
-  const [profileComplete, setProfileComplete] = useState(false);
-  const [day, setDay] = useState(0);
-  const [loopCount, setLoopCount] = useState(0);
-  const [log, setLog] = useState([]);
 
 
 

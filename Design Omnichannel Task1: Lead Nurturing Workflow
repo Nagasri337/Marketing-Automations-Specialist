@@ -17,6 +17,12 @@
 
 
 
+
+
+
+
+
+
   const addLog = (msg) => setLog((prev) => [...prev, msg]);
 
   useEffect(() => {

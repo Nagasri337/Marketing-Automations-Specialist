@@ -1,0 +1,93 @@
+import { useState, useEffect } from "react";
+
+export default function LeadNurturingWorkflow() {
+  const [profileComplete, setProfileComplete] = useState(false);
+  const [day, setDay] = useState(0);
+  const [loopCount, setLoopCount] = useState(0);
+  const [log, setLog] = useState([]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const addLog = (msg) => setLog((prev) => [...prev, msg]);
+
+  useEffect(() => {
+    runWorkflow();
+  }, [day]);
+
+  const runWorkflow = () => {
+    if (day === 0) {
+      addLog("Day 0: Signup → Sending Welcome via WhatsApp, SMS, Email");
+      setDay(1);
+    }
+
+    if (day === 1) {
+      if (profileComplete) {
+        addLog("Profile complete → Sending congratulatory message → END");
+        return;
+      }
+      addLog("Day 1: Profile incomplete → Starting reminder loop");
+      startReminderLoop();
+    }
+  };
+
+  const startReminderLoop = () => {
+    if (loopCount >= 3) {
+      addLog("After Day 3: Sending Final Reminder Email → END");
+      return;
+    }
+
+    addLog(`Reminder Loop Day ${loopCount + 1}: Sending WhatsApp Reminder`);
+    const delivered = Math.random() > 0.3; // simulate 70% delivery success
+
+    if (delivered) {
+      addLog("WhatsApp Delivered → Waiting 24 hours");
+      setTimeout(() => {
+        if (!profileComplete) {
+          addLog("Rechecking profile → Still incomplete");
+          setLoopCount(loopCount + 1);
+          startReminderLoop();
+        } else {
+          addLog("Profile completed → Sending Congrats → END");
+        }
+      }, 500);
+    } else {
+      addLog("WhatsApp Failed → Sending SMS Backup");
+      setLoopCount(loopCount + 1);
+      startReminderLoop();
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Nurturing Workflow Simulation</h1>
+
+      <button onClick={() => setProfileComplete(true)}>
+        Mark Profile as Completed
+      </button>
+
+      <div style={{ marginTop: "20px" }}>
+        <h2>Workflow Log</h2>
+        <ul>
+          {log.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
